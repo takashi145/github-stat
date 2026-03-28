@@ -2,6 +2,7 @@ import json
 import os
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 from typing import Any
 
 GITHUB_API = "https://api.github.com"
@@ -30,25 +31,35 @@ def fetch_repos(username: str, token: str | None = None) -> list[dict]:
     return repos
 
 
-def aggregate(username: str, token: str | None = None) -> list[dict]:
+def aggregate(username: str, token: str | None = None) -> dict:
     lang_bytes: dict[str, int] = {}
+    repo_count = 0
     for repo in fetch_repos(username, token):
         try:
             langs, _ = request(f"{GITHUB_API}/repos/{username}/{repo['name']}/languages", token)
             for lang, count in langs.items():
                 lang_bytes[lang] = lang_bytes.get(lang, 0) + count
+            repo_count += 1
         except urllib.error.HTTPError:
             pass
 
     total = sum(lang_bytes.values())
-    return [
-        {"lang": lang, "percent": round(count / total * 100, 1)}
+    languages = [
+        {"lang": lang, "bytes": count, "percent": round(count / total * 100, 1)}
         for lang, count in sorted(lang_bytes.items(), key=lambda x: x[1], reverse=True)
     ]
+    return {
+        "schema_version": 1,
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "username": username,
+        "repo_count": repo_count,
+        "total_bytes": total,
+        "languages": languages,
+    }
 
 
-def generate_svg(stats: list[dict], max_langs: int = 10) -> str:
-    langs = stats[:max_langs]
+def generate_svg(stats: dict, max_langs: int = 10) -> str:
+    langs = stats["languages"][:max_langs]
 
     W = 400
     PAD = 16
@@ -90,6 +101,7 @@ def main() -> None:
 
     with open(os.path.join(base, "langs.json"), "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
     with open(os.path.join(base, "langs.svg"), "w", encoding="utf-8") as f:
         f.write(generate_svg(stats))
