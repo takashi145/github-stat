@@ -1,22 +1,38 @@
 # GitHub Stats
 
-自分の公開リポジトリの使用言語割合を集計し、`langs.json` と `langs.svg` を自動更新します。
-（フォークしたリポジトリや Organization のリポジトリは対象外です）
+公開リポジトリの言語割合を集計し、GitHub Pages で公開する。  
+現在は毎週（日曜 00:00 UTC）に実行（`.github/workflows/update-langs.yml` の cron を編集)
 
 ## セットアップ
 
-1. このリポジトリをフォーク
-2. Actions タブで GitHub Actions を有効化
-
-毎週日曜に自動実行されます。実行スケジュールを変更したい場合は [`.github/workflows/update-langs.yml`](.github/workflows/update-langs.yml) の `cron` を編集してください。
+1. リポジトリをフォーク
+2.  **Settings → Pages → Source** を `GitHub Actions` に設定
 
 ## 出力
 
-- `langs.json` — 言語名と割合（%）が多い順で保存されます
-- `langs.svg` — 使用言語を棒グラフで可視化したSVGです（上位10件、変更する場合は `generate_svg` の `max_langs` を編集してください）
+| ファイル | 内容 | URL |
+|---|---|---|
+| `langs.json` | 言語別バイト数・割合の集計データ | `https://<username>.github.io/github-stats/langs.json` |
+| `langs.svg` | 言語割合を棒グラフで可視化した画像 | `https://<username>.github.io/github-stats/langs.svg` |
 
-## 使用例
-GitHub Pagesを利用し、自分のプロフィールに使用言語の割合を表示することができます。例えば、以下のようにMarkdownに埋め込むことができます：
-```markdown
-![Languages](https://<username>.github.io/github-stats/langs.svg)
+### langs.json
+```json
+{
+  "schema_version": 1,
+  "generated_at": "ISO8601",
+  "username": "string",
+  "repo_count": number,
+  "total_bytes": number,
+  "languages": [
+    {
+      "lang": "string",
+      "bytes": number,
+      "percent": number
+    }
+  ]
+}
 ```
+
+### langs.svg
+上位10件。表示件数は `scripts/aggregate_langs.py` の `max_langs` で変更可。
+![GitHub Languages](https://takashi145.github.io/github-stats/langs.svg)
