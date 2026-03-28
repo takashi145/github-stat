@@ -97,7 +97,8 @@ def main() -> None:
 
     stats = aggregate(username, token)
 
-    base = os.path.join(os.path.dirname(__file__), "..")
+    base = os.path.join(os.path.dirname(__file__), "..", "dist")
+    os.makedirs(base, exist_ok=True)
 
     with open(os.path.join(base, "langs.json"), "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
