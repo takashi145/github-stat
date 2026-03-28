@@ -1,1 +1,70 @@
-[]
+[
+  {
+    "lang": "PHP",
+    "percent": 33.7
+  },
+  {
+    "lang": "Blade",
+    "percent": 22.0
+  },
+  {
+    "lang": "TypeScript",
+    "percent": 12.8
+  },
+  {
+    "lang": "Vue",
+    "percent": 6.7
+  },
+  {
+    "lang": "Ruby",
+    "percent": 6.2
+  },
+  {
+    "lang": "HTML",
+    "percent": 4.2
+  },
+  {
+    "lang": "Astro",
+    "percent": 3.3
+  },
+  {
+    "lang": "Python",
+    "percent": 2.5
+  },
+  {
+    "lang": "Java",
+    "percent": 2.4
+  },
+  {
+    "lang": "Svelte",
+    "percent": 2.3
+  },
+  {
+    "lang": "JavaScript",
+    "percent": 2.1
+  },
+  {
+    "lang": "CSS",
+    "percent": 0.7
+  },
+  {
+    "lang": "SCSS",
+    "percent": 0.6
+  },
+  {
+    "lang": "Shell",
+    "percent": 0.2
+  },
+  {
+    "lang": "Dockerfile",
+    "percent": 0.2
+  },
+  {
+    "lang": "Makefile",
+    "percent": 0.1
+  },
+  {
+    "lang": "Hack",
+    "percent": 0.0
+  }
+]
